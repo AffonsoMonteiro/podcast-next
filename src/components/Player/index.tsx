@@ -12,7 +12,15 @@ import styles from './styles.module.scss';
 export function Player() {
     const audioRef = useRef<HTMLAudioElement>(null);
 
-    const { episodeList, currentEpisodeIndex, isPlaying, togglePlay } = useContext(PlayerContext)
+    const { 
+        episodeList, 
+        currentEpisodeIndex, 
+        isPlaying, 
+        togglePlay, 
+        setPlayingState,
+        playNext,
+        playPrevious, 
+    } = useContext(PlayerContext)
 
     useEffect(() => {
         if(!audioRef.current) {
@@ -74,6 +82,8 @@ export function Player() {
                         src={episode.url}
                         autoPlay
                         ref={audioRef}
+                        onPlay={() => setPlayingState(true)}
+                        onPause={() => setPlayingState(false)}
                     />
                 )}
 
@@ -81,7 +91,7 @@ export function Player() {
                     <button type="button" disabled={!episode}>
                         <img src="/shuffle.svg" alt="Emparalhar" />
                     </button>
-                    <button type="button" disabled={!episode}>
+                    <button type="button" onClick={playPrevious} disabled={!episode}>
                         <img src="/play-previous.svg" alt="Tocar anterior" />
                     </button>
                     <button 
@@ -94,7 +104,7 @@ export function Player() {
                         ? <img src="/pause.svg" alt="Pausar" /> 
                         : <img src="/play.svg" alt="Tocar" />}
                     </button>
-                    <button type="button" disabled={!episode}>
+                    <button type="button" onClick={playNext} disabled={!episode}>
                         <img src="/play-next.svg" alt="Tocar próxima" />
                     </button>
                     <button type="button" disabled={!episode}>
